@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  doosan-ros2:
+    container_name: doosan-ros2-humble
+    hostname: doosan-nuc
+
+    # Run as root inside container (no UID mapping)
+    user: "root"
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: {}
+
+    image: doosan-ros2:humble
+    restart: unless-stopped
+
+    # host networking is helpful for ROS2 and robot comms
+    network_mode: host
+
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+
+    volumes:
+      # Docker socket required for emulator image pulls & docker-in-docker tasks
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+
+      # X11 (for GUI apps)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+      # Persist workspace on host; maps host folder to container /ros2_ws
+      - ${WORKSPACE_PATH:-./doosan_workspace}:/ros2_ws:rw
+
+      # Optional config & shared folders (map to root's locations inside container)
+      - ${CONFIG_PATH:-./doosan_config}:/root/.config:rw
+      - ${SHARED_PATH:-./shared}:/root/shared:rw
+
+      # Devices (cameras, USB, etc.)
+      - /dev:/dev
+
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+      - XDG_RUNTIME_DIR=/tmp/runtime-root
+      - ROS_DISTRO=humble
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - ROBOT_MODEL=${ROBOT_MODEL:-m1013}
+      - ROBOT_IP=${ROBOT_IP:-192.168.137.100}
+      - ROBOT_PORT=${ROBOT_PORT:-12345}
+      - ROBOT_MODE=${ROBOT_MODE:-virtual}
+      - HOME=/root
+      - USER=root
+      - DOCKER_API_VERSION=1.42
+
+    devices:
+      - /dev/dri:/dev/dri
+
+    device_cgroup_rules:
+      - 'c 81:* rmw'
+      - 'c 189:* rmw'
+
+    stdin_open: true
+    tty: true
+
+    working_dir: /ros2_ws
