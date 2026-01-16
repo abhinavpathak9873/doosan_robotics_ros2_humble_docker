@@ -78,35 +78,6 @@ On first run, the entrypoint script will:
 
 This process may take 10-15 minutes on the first run.
 
-## Configuration
-
-### Environment Variables
-
-You can customize the setup by creating a `.env` file in the project directory:
-
-```bash
-# Workspace location on host (persisted)
-WORKSPACE_PATH=./doosan_workspace
-
-# Configuration files location
-CONFIG_PATH=./doosan_config
-
-# Shared files location
-SHARED_PATH=./shared
-
-# ROS Domain ID
-ROS_DOMAIN_ID=0
-
-# Robot configuration
-ROBOT_MODEL=m1013
-ROBOT_IP=192.168.137.100
-ROBOT_PORT=12345
-ROBOT_MODE=virtual
-
-# Display (usually :0 or :1)
-DISPLAY=:0
-```
-
 ## Usage
 
 ### Launch Virtual Robot with RViz
