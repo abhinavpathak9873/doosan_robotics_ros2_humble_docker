@@ -95,13 +95,13 @@ ros2 launch dsr_bringup2 dsr_bringup2_rviz.launch.py mode:=virtual model:=m1013
 ros2 launch dsr_bringup2 dsr_bringup2_rviz.launch.py mode:=real host:=192.168.137.100 port:=12345 model:=m1013
 ```
 
-## Launch Virtual Robot with Gazebo
+### Launch Virtual Robot with Gazebo
 
 ```bash
 ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=virtual host:=127.0.0.1 port:=12346 name:=dsr01 x:=0 y:=0
 ```
 
-## Launch Real Robot with Gazebo
+### Launch Real Robot with Gazebo
 
 ```bash
 ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=real host:=192.168.137.100 model:=m1013
@@ -124,7 +124,7 @@ ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=real model:=m1013 h
 ```bash
 ros2 launch realsense2_camera rs_launch.py
 ```
-## Launch RealSense Camera with PointCloud Enabled
+### Launch RealSense Camera with PointCloud Enabled
 
 ```bash
 ros2 launch realsense2_camera rs_launch.py \
