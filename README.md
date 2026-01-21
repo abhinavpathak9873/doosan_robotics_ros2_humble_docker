@@ -92,7 +92,7 @@ ros2 launch dsr_bringup2 dsr_bringup2_rviz.launch.py mode:=virtual model:=m1013
 ### Launch Real Robot with RViz
 
 ```bash
-ros2 launch dsr_bringup2 dsr_bringup2_rviz.launch.py mode:=real host:=192.168.137.100 port:=12345 model:=m1013
+ros2 launch dsr_bringup2 dsr_bringup2_rviz.launch.py mode:=real host:=192.168.50.100 port:=12345 model:=m1013
 ```
 
 ### Launch Virtual Robot with Gazebo
@@ -104,7 +104,7 @@ ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=virtual host:=127.0
 ### Launch Real Robot with Gazebo
 
 ```bash
-ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=real host:=192.168.137.100 model:=m1013
+ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=real host:=192.168.50.100 model:=m1013
 ```
 
 ### Launch with MoveIt2 (Virtual Mode)
@@ -115,7 +115,7 @@ ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=virtual model:=m101
 ### Launch with MoveIt2 (Real Mode)
 ⚠ Caution: MoveIt2 requires Controller Version 2.12 or higher. Check the controller versionon the pendant and update to the latest version from the Doosan's support website. 
 ```bash
-ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=real model:=m1013 host:=192.168.137.100
+ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=real model:=m1013 host:=192.168.50.100
 ```
 
 ### Launch RealSense Camera
