@@ -108,13 +108,12 @@ ros2 launch dsr_bringup2 dsr_bringup2_gazebo.launch.py mode:=real host:=192.168.
 ```
 
 ### Launch with MoveIt2 (Virtual Mode)
-⚠ Caution: MoveIt2 requires Controller Version 2.12 or higher. Check the controller versionon the pendant and update to the latest version from the Doosan's support website.
 
 ```bash
-ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=real model:=m1013 host:=192.168.137.100
+ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=virtual model:=m1013 host:=127.0.0.1
 ```
 ### Launch with MoveIt2 (Real Mode)
-⚠ Caution: Make sure the IP address is correct! 
+⚠ Caution: MoveIt2 requires Controller Version 2.12 or higher. Check the controller versionon the pendant and update to the latest version from the Doosan's support website. 
 ```bash
 ros2 launch dsr_bringup2 dsr_bringup2_moveit.launch.py mode:=real model:=m1013 host:=192.168.137.100
 ```
