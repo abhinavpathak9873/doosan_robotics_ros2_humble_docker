@@ -1,16 +1,17 @@
 #!/bin/bash
-echo "🔥 container-entrypoint.sh is running 🔥"
+echo "container-entrypoint.sh is running......"
 sleep 2
-set -euo pipefail
 
-# ---------- Config ----------
+set -eo pipefail
+
+#Config
 ROS_DISTRO=${ROS_DISTRO:-humble}
 ROS2_WS=${ROS2_WS:-/ros2_ws}
 MARKER="${ROS2_WS}/.container_setup_done"
 REALSENSE_ENV_FILE="/etc/profile.d/librealsense_env.sh"
 ROS2_ENV_FILE="/etc/profile.d/ros2_env.sh"
 
-# ---------- Helper ----------
+#Helper
 log() { printf '\e[1;34m• %s\e[0m\n' "$*"; }
 
 echo ""
@@ -54,7 +55,9 @@ fi
 # Source ROS system install for this script context
 if [ -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]; then
   # shellcheck disable=SC1090
+  set +u  # Temporarily disable unset variable check for sourcing
   . /opt/ros/${ROS_DISTRO}/setup.bash
+  set -u  # Re-enable it
   log "Sourced /opt/ros/${ROS_DISTRO}/setup.bash"
 else
   log "Warning: /opt/ros/${ROS_DISTRO}/setup.bash not found"
@@ -88,13 +91,15 @@ echo ""
 # Install package dependencies (skip librealsense2 to avoid DKMS dependency)
 log "Installing rosdep dependencies (skipping librealsense2)..."
 cd "${ROS2_WS}"
+set +u
 . /opt/ros/${ROS_DISTRO}/setup.bash
+set -u
 rosdep install -r --from-paths src --ignore-src --rosdistro "${ROS_DISTRO}" --skip-keys=librealsense2 -y || {
   log "rosdep install returned non-zero (continuing)"
 }
 echo ""
 
-# Run install_emulator.sh if available (best-effort; requires docker socket)
+# Run install_emulator.sh if available
 EMULATOR_SCRIPT="${ROS2_WS}/src/doosan-robot2/install_emulator.sh"
 if [ -f "${EMULATOR_SCRIPT}" ]; then
   log "Found install_emulator.sh — attempting to run (requires /var/run/docker.sock & privileged)"
@@ -114,12 +119,16 @@ echo ""
 # Build workspace: try full parallel build, retry with safer flags if it fails
 log "Building ROS2 workspace with colcon (this may take long)..."
 cd "${ROS2_WS}"
+set +u
 . /opt/ros/${ROS_DISTRO}/setup.bash
+set -u
 
 # If an old install exists, source it so dependent packages build reliably
 if [ -f "${ROS2_WS}/install/setup.bash" ]; then
   # shellcheck disable=SC1090
+  set +u
   . "${ROS2_WS}/install/setup.bash" || true
+  set -u
   log "Sourced existing workspace install/setup.bash"
 fi
 
@@ -135,7 +144,7 @@ else
   fi
 fi
 
-# Ensure install/setup.bash exists for shells — create lightweight fallback if not
+# Ensure install/setup.bash exists for shells
 if [ ! -f "${ROS2_WS}/install/setup.bash" ]; then
   log "Workspace install/setup.bash not found — creating lightweight fallback to source /opt/ros"
   mkdir -p "${ROS2_WS}/install"
